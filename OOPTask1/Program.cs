@@ -5,6 +5,7 @@ namespace OOPTask1
 {
     internal class Program
     {
+        static bool stopLoop = false;
         static void Main(string[] args)
         {
             List<User> users = new List<User>();
@@ -12,140 +13,64 @@ namespace OOPTask1
             while (true)
             {
                 Console.WriteLine($"1-Add User \n2-Update Data of User \n3-Delete User\n4-Print All User");
-                chose = int.Parse(Console.ReadLine());
-                if (chose == 1)
+                string input = Console.ReadLine();
+                User user = new User();
+
+
+                if (int.TryParse(input, out chose))
                 {
-                    Console.WriteLine($"============================Add User================================");
-
-                    Console.Write("Enter Name: ");
-                    string name = Console.ReadLine();
-
-                    Console.Write("Enter Email: ");
-                    string email = Console.ReadLine();
-
-                    Console.Write("Enter Phone Number: ");
-                    string phoneNumber = Console.ReadLine();
-
-                    User newUser = new User
+                    if (chose == 1)
                     {
-                        name = name,
-                        email = email,
-                        phoneNumber = phoneNumber
-                    };
-                    users.Add(newUser);
-
-                    Console.WriteLine($"============================User Information you Enterd================================");
-                    Console.WriteLine($"Name: {newUser.name}");
-                    Console.WriteLine($"Email: {newUser.email}");
-                    Console.WriteLine($"Phone Number: {newUser.phoneNumber}");
-                }
-                else if (chose == 2)
-                {
-                    Console.WriteLine($"============================Update Data of User================================");
-                    Console.Write("Enter User Phone Number you want to Edit: ");
-                    string phoneNumber = Console.ReadLine();
-                    User Foundeduser = users.FirstOrDefault(x => x.phoneNumber == phoneNumber);
-                    if (Foundeduser != null)
+                        user.AddUser(users);
+                    }
+                    else if (chose == 2)
                     {
-                        Console.Write("1-Edit Name: \n2-Edit Email: \n3-Edit PhoneNumber: \n");
-                        int choseToEdit = int.Parse( Console.ReadLine() );
-                        if (choseToEdit==1)
-                        {
-                            Console.Write("Enter Edited Name: ");
-                            string newName = Console.ReadLine();
-                            Foundeduser.name = newName;
-
-                        }
-                        else if (choseToEdit == 2)
-                        {
-                            Console.Write("Enter Edited Email: ");
-                            string newEmail = Console.ReadLine();
-                            Foundeduser.email = newEmail;
-                        }
-                        else if (choseToEdit == 3)
-                        {
-                            Console.Write("Enter Edited Phone Number: ");
-                            string newPhoneNumber = Console.ReadLine();
-                            Foundeduser.phoneNumber = newPhoneNumber;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                        Console.WriteLine($"============================New User Information you Edited================================");
-                        Console.WriteLine($"Name: {Foundeduser.name}");
-                        Console.WriteLine($"Email: {Foundeduser.email}");
-                        Console.WriteLine($"Phone Number: {Foundeduser.phoneNumber}");
+                        user.UpdateUser(users);
+                    }
+                    else if (chose == 3)
+                    {
+                        user.DeleteUser(users);
+                    }
+                    else if (chose == 4)
+                    {
+                        user.PrintAllUser(users);
                     }
                     else
                     {
-                        Console.WriteLine("No user Like this");
-                    }
-                }
-                else if (chose == 3)
-                {
-                    Console.WriteLine($"============================Delete User================================");
-                    Console.Write("Enter User Phone Number you want to Delete: ");
-                    string phoneNumber = Console.ReadLine();
-                    User Foundeduser = users.FirstOrDefault(x => x.phoneNumber == phoneNumber);
-                    if (Foundeduser != null)
-                    {
-                        users.Remove(Foundeduser);
-                    }
-                    else
-                    {
-                        Console.WriteLine("No user Like this");
-                    }
-                }
-                else if (chose == 4)
-                {
-                    int count = 1;
-                    if (users.Count == 0)
-                    {
-                        Console.WriteLine($"===================================================================");
+                        Console.WriteLine("You Enter Wrong Number!!");
 
-                        Console.WriteLine("No users to print");
-                    }
-                    else
-                    {
-                    Console.WriteLine($"============================Print All User================================");
-                    }
-                    
-                    foreach (var user in users)
-                    {
-                        Console.WriteLine($"User {count}");
-                        Console.WriteLine($"Name: {user.name}");
-                        Console.WriteLine($"Email: {user.email}");
-                        Console.WriteLine($"Phone Number: {user.phoneNumber}");
-                        count++;
-                        if (count <= users.Count)
-                        {
-                        Console.WriteLine("----------------");
-                        }
                     }
 
+                    TryAgain();
+                    if (stopLoop)
+                    {
+                        break;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("You Enter Wrong Number!!");
-
+                    Console.WriteLine("==========================================================");
+                    Console.WriteLine("Invalid input. Please enter a number.");
+                    Console.WriteLine("==========================================================");
                 }
+            }
+
+
+        }
+        static void TryAgain()
+        {
+            Console.WriteLine($"===================================================================");
+
+            Console.WriteLine("Do you want to try anything else ? \n Y for yes || N for no");
+            char tryAgain = char.Parse(Console.ReadLine());
+            if (tryAgain == 'Y' || tryAgain == 'y')
+            {
                 Console.WriteLine($"===================================================================");
-
-                Console.WriteLine("Do you want to try anything else ? \n Y for yes || N for no");
-                char tryAgain = char.Parse( Console.ReadLine() );
-                if (tryAgain == 'Y' || tryAgain == 'y')
-                {
-                    Console.WriteLine($"===================================================================");
-                    continue;
-                }
-                else if (tryAgain=='N' || tryAgain == 'n')
-                {
-                    break;
-                }
-
-            } 
-
+            }
+            else if (tryAgain == 'N' || tryAgain == 'n')
+            {
+                stopLoop = true;
+            }
 
         }
     }
